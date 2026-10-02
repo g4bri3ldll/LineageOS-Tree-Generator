@@ -73,7 +73,24 @@ jobs:
         sudo mkdir LOS-Generator
         sudo chmod 777 LOS-Generator
         cd LOS-Generator
-        git clone ${{ env.DU }} -b ${{ env.DUB }}
+        git clone \({{ env.DU }} -b\){{ env.DUB }}
+
+    - name: Unir partes divididas das imagens (.img)
+      id: merge-parts
+      run: |
+        cd /home/LOS-Generator/*
+        
+        echo "Unindo super.img..."
+        cat super_part_* > super.img
+        
+        echo "Unindo system.img..."
+        cat system_part_* > system.img
+        
+        echo "Unindo product.img..."
+        cat product_part_* > product.img
+        
+        echo "Partições unidas com sucesso!"
+        ls -lh *.img
 
     - name: Installing AOSPDTGEN
       id: setup-aosp-dtgen
@@ -103,5 +120,5 @@ jobs:
         git branch -M lineage-${{ env.CN }}
         git add .
         git commit -s -m "${{ env.CN }}: LineageOS compatible device tree"
-        gh repo create lineage_device_${{ env.DB }}_${{ env.CN }} --public --description="LineageOS compatible device tree for ${{ env.CN }}." --source=. --remote=origin --push
+        gh repo create lineage_device_\({{ env.DB }}_\){{ env.CN }} --public --description="LineageOS compatible device tree for ${{ env.CN }}." --source=. --remote=origin --push
         echo "Successful!"
