@@ -75,6 +75,23 @@ jobs:
         cd LOS-Generator
         git clone ${{ env.DU }} -b ${{ env.DUB }}
 
+    - name: Unir partes divididas das imagens (.img)
+      id: merge-parts
+      run: |
+        cd /home/LOS-Generator/*
+        
+        echo "Unindo super.img..."
+        cat super_part_* > super.img
+        
+        echo "Unindo system.img..."
+        cat system_part_* > system.img
+        
+        echo "Unindo product.img..."
+        cat product_part_* > product.img
+        
+        echo "Partições unidas com sucesso!"
+        ls -lh *.img    
+
     - name: Installing AOSPDTGEN
       id: setup-aosp-dtgen
       run: |
