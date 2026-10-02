@@ -89,7 +89,10 @@ jobs:
         cat product_part_* > product.img
         
         echo "Partições unidas com sucesso!"
-        ls -lh *.img    
+        ls -lh *.img
+        
+        rm -f super.img
+        ls -lh
 
     - name: Installing AOSPDTGEN
       id: setup-aosp-dtgen
